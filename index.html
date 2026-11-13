@@ -5,7 +5,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
     <meta name="theme-color" content="#173b66">
-    <link rel="manifest" href="manifest.webmanifest">
     <link rel="stylesheet" href="home.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <title>勤怠・給与メモ</title>
@@ -19,17 +18,17 @@
             <p>自分用・SQLで記録する試作版</p>
         </header>
         <nav class="item">
-            <a href="" id="home">ホーム</a>
-            <a href="">勤務予定</a>
-            <a href="">勤務実績</a>
-            <a href="">給与</a>
-            <a href="">記録</a>
-            <a href="">バックアップ</a>
+            <a href="index.html" id="home">ホーム</a>
+            <span class="navDisabled" id="work-schedule" aria-disabled="true">勤務予定</span>
+            <span class="navDisabled" id="work-records" aria-disabled="true">勤務実績</span>
+            <span class="navDisabled" id="earnings" aria-disabled="true">給与</span>
+            <a href="#recordsPanel" id="log">記録</a>
+            <span class="navDisabled" id="backup" aria-disabled="true">バックアップ</span>
         </nav>
 
         <section class="notice">
             <i class="fa-solid fa-database"></i>
-            <span id="status">SQLiteを準備しています…</span>
+            <span id="status">SQLite保存は未実装です</span>
         </section>
         <section class="panel">
             <button id="openText" type="button" aria-expanded="false">
@@ -53,9 +52,9 @@
                     </label>
                     <label>勤務先
                         <select id="workplace">
+                            <option value="">ー ー ー</option>
                             <option>守口スイミング</option>
                             <option>ロボ団</option>
-                            <option>東進採点</option>
                             <option>東進・品質管理</option>
                             <option>Cinet</option>
                             <option>想彩</option>
@@ -66,10 +65,63 @@
                             <option>その他</option>
                         </select>
                     </label>
+                    <label id="otherWorkplaceField" hidden>勤務先名
+                        <input type="text" id="otherWorkplace" placeholder="勤務先名を入力" maxlength="100">
+                    </label>
                     <label class="check">
                         <input type="checkbox" id="direct"> 金額を直接入力する（配達・研究協力など）
                     </label>
-                    <div id="hourly">
+
+                    <div id="lesson" hidden>
+                        <div id="lessonEarnings"><strong>コマ給制</strong><span>70分 / ジュニアクラス 1,440円・成人クラス 1,800円</span></div>
+                        <h3 class="formHeading">勤務コマ数</h3>
+                        <p class="lessonHint">勤務したコマをタップ（複数選択可）</p>
+                        <p id="lessonDayHint" class="hint" aria-live="polite"></p>
+                        <div class="lessonGrid" role="group" aria-label="勤務コマ">
+                            <button type="button" class="lessonButton" value="A-2" data-rate="1" data-days="3,6" data-start="14:00" data-end="15:10" aria-pressed="false">
+                                <strong>A-2</strong><span>14:00〜15:10</span>
+                            </button>
+                            <button type="button" class="lessonButton" value="A-3" data-rate="1" data-days="1,2,3,4,5,6" data-start="15:10" data-end="16:20" aria-pressed="false">
+                                <strong>A-3</strong><span>15:10〜16:20</span>
+                            </button>
+                            <button type="button" class="lessonButton" value="A-4" data-rate="1" data-days="1,2,3,4,5,6" data-start="16:20" data-end="17:30" aria-pressed="false">
+                                <strong>A-4</strong><span>16:20〜17:30</span>
+                            </button>
+                            <button type="button" class="lessonButton" value="A-5" data-rate="1" data-days="1,2,3,4,5,6" data-start="17:30" data-end="18:40" aria-pressed="false">
+                                <strong>A-5</strong><span>17:30〜18:40</span>
+                            </button>
+                            <button type="button" class="lessonButton" value="M-1" data-rate="1.25" data-days="5" data-start="18:40" data-end="19:50" aria-pressed="false">
+                                <strong>M-1</strong><span>18:40〜19:50</span><small class="lessonMultiplier">×1.25</small>
+                            </button>
+                            <button type="button" class="lessonButton" value="M-2" data-rate="1.25" data-days="2,5" data-start="19:50" data-end="21:00" aria-pressed="false">
+                                <strong>M-2</strong><span>19:50〜21:00</span><small class="lessonMultiplier">×1.25</small>
+                            </button>
+                            <button type="button" class="lessonButton" value="A-0" data-rate="1" data-days="0" data-start="08:50" data-end="10:00" aria-pressed="false">
+                                <strong>A-0</strong><span>08:50〜10:00</span>
+                            </button>
+                            <button type="button" class="lessonButton" value="A-6" data-rate="1" data-days="0" data-start="10:00" data-end="11:10" aria-pressed="false">
+                                <strong>A-6</strong><span>10:00〜11:10</span>
+                            </button>
+                            <button type="button" class="lessonButton" value="A-7" data-rate="1" data-days="0" data-start="11:10" data-end="12:20" aria-pressed="false">
+                                <strong>A-7</strong><span>11:10〜12:20</span>
+                            </button>
+                        </div>
+                        <div class="lessonTools">
+                            <span id="selectedCount">0コマ選択中</span>
+                            <button type="button" id="clearLessons">選択をクリア</button>
+                        </div>
+                        <div class="calculationBox">
+                            <div class="resultRow"><span>コマ数</span><strong><span id="numberOfLessons">0</span> コマ</strong></div>
+                            <div class="resultRow"><span>ジュニアクラス</span><strong id="juniorSummary">0コマ / 0円</strong></div>
+                            <div class="resultRow"><span>成人クラス</span><strong id="adultSummary">0コマ / 0円</strong></div>
+                            <div class="resultRow"><span>合計勤務時間</span><strong id="workTime"></strong></div>
+                            <div class="resultRow"><span>給与予定額</span><strong id="lessonSalary"></strong></div>
+                        </div>
+                        <p id="lessonError" class="error" hidden>勤務したコマを選択してください。</p>
+                    </div>
+
+                    <div id="hourly" hidden>
+                        <div class="payMode">時給制</div>
                         <div class="two">
                             <label>出勤
                                 <input type="time" id="start" value="09:00">
@@ -79,17 +131,28 @@
                             </label>
                         </div>
                         <label>時給（円）
-                            <input type="number" id="rate" min="0" step="1" value="1200">
+                            <input type="number" id="rate" min="0" step="1" placeholder="時給を入力">
                         </label>
-                        <p class="hint">※休憩・深夜割増・交通費・税金はまだ未対応。終了時刻は開始時刻より後にしてね。</p>
+                        <div class="calculationBox">
+                            <div class="resultRow"><span>合計勤務時間</span><strong id="hourlyWorkTime">—</strong></div>
+                            <div class="resultRow"><span>給与予定額</span><strong id="hourlySalary">—</strong></div>
+                        </div>
+                        <p class="hint">※休憩・深夜割増・税金はまだ未対応。終了時刻は開始時刻より後にしてね。</p>
                     </div>
                     <div id="flat" hidden>
                         <label>受取予定額（円）
                             <input type="number" id="amount" min="0" step="1" value="0">
                         </label>
                     </div>
-                    <p id="preview" class="preview">計算中…</p>
-                    <button type="submit" id="save" disabled>勤務記録を保存
+                    <div class="calculationBox transportBox">
+                        <div class="resultRow"><span>交通費（往復・自動計算）</span><div class="transportAmount"><strong id="transport">0円</strong><small id="transportFormula">0円 × 2</small></div></div>
+                    </div>
+                    <div id="preview" class="grossBox">
+                        <div>総支給額</div>
+                        <div class="grossAmount"><span id="grossSalary">—</span><span class="yenUnit">円</span></div>
+                        <div class="grossDetail">基本給 <span id="baseSalary">—</span>円 ＋ 交通費 <span id="transportSalary">0</span>円</div>
+                    </div>
+                    <button type="submit" id="save" disabled>勤務記録を登録する
 
                     </button>
                 </form>
@@ -98,7 +161,32 @@
 
         </section>
 
-        <footer>試行版 v0.1／個人用。バックアップ推奨</footer>
+
+        <section class="panel" id="recordsPanel">
+            <button id="openRecords" type="button" aria-expanded="false" aria-controls="recordsArea">
+
+                <div class="register-icon">
+                    <i class="fa-solid fa-clipboard-list"></i>
+                </div>
+
+                <div class="register-title">
+                    <h2>記録</h2>
+                    <p>勤務の記録を確認・編集する</p>
+                </div>
+
+                <i id="recordsArrow" class="fa-solid fa-chevron-down"></i>
+
+            </button>
+            <div id="recordsArea" inert>
+                <a class="recordsLink" href="work-records.html">
+                    <i class="fa-solid fa-list" aria-hidden="true"></i>
+                    <span><strong>勤務管理一覧へ</strong><small>登録した勤務記録を確認する</small></span>
+                    <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+                </a>
+            </div>
+        </section>
+
+        <footer>試行版 v0.2.1／個人用。バックアップ推奨</footer>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/sql.js@1.13.0/dist/sql-wasm.js"></script>
     <script src="home.js"></script>
