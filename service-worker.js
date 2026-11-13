@@ -1,4 +1,4 @@
-const CACHE_NAME = "worklog-v1";
+const CACHE_NAME = "worklog-v2";
 
 const FILES = [
     "./",
@@ -30,6 +30,25 @@ self.addEventListener("fetch", function (event) {
             }
 
             return fetch(event.request);
+
+        })
+    );
+
+});
+
+self.addEventListener("activate", function (event) {
+
+    event.waitUntil(
+        caches.keys().then(function (keys) {
+
+            return Promise.all(
+                keys
+                    .filter(key =>
+                        key.startsWith("worklog-") &&
+                        key !== CACHE_NAME
+                    )
+                    .map(key => caches.delete(key))
+            );
 
         })
     );
