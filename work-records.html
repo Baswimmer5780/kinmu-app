@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#174D3A"><link rel="stylesheet" href="home.css?v=1101"><link rel="stylesheet" href="pages.css?v=1201"><link rel="manifest" href="manifest.webmanifest"><title>WORK LOG | 勤務実績</title><link rel="stylesheet" href="release-touch.css?v=final1">
+</head>
+<body class="subpage"><main><header>
+            <h1 id="mainTitle">WORK LOG</h1>
+            <p id="subTitle">勤怠・給与管理アプリ</p>
+            <p class="releaseTicker"><span class="releaseTickerText">祝！勤怠管理アプリ公開間近！</span></p>
+        </header>
+        <nav class="item">
+            <a href="index.html" id="home">ホーム</a>
+            <span class="navDisabled" id="work-schedule" aria-disabled="true">勤務予定</span>
+            <a href="work-records.html" id="work-records" aria-current="page">勤務実績</a>
+            <span class="navDisabled" id="earnings" aria-disabled="true">給与</span>
+            <a href="index.html#recordsPanel" id="log">記録</a>
+            <a href="backup.html" id="backup">バックアップ</a>
+        </nav><div class="pageContent recordsPage">
+<h2>勤務実績</h2>
+<section class="panel recordsFilters" aria-label="実績の絞り込み">
+  <h3>実績を検索</h3>
+  <div class="filterGrid"><label>年<select id="year"></select></label><label>月<select id="month"><option value="">全月</option></select></label></div>
+  <label>勤務先<select id="place"><option value="">全勤務先</option></select></label>
+  <label>勤務先・備考のキーワード<input id="search" type="search" placeholder="例：守口、研修"></label>
+  <button type="button" id="resetFilters">今月に戻す</button>
+</section>
+<section class="panel annualPanel" aria-labelledby="annualTitle">
+  <h3 id="annualTitle">年間総額</h3><p id="annualScope" class="summaryCaption"></p>
+  <strong id="annualTotal" class="annualTotal">—</strong>
+  <div class="summaryBreakdown"><span>基本給 <b id="annualBase">—</b></span><span>交通費 <b id="annualFare">—</b></span></div>
+  <p class="summaryCaption">勤務日ベース・支払日ベースではありません。月・キーワードの絞り込みは年間集計に反映しません。</p>
+</section>
+<section class="panel" aria-labelledby="periodTitle">
+  <h3 id="periodTitle">選択期間の集計</h3><p id="periodScope" class="summaryCaption"></p>
+  <div class="periodGrid"><div><span>基本給</span><strong id="periodBase">—</strong></div><div><span>交通費</span><strong id="periodFare">—</strong></div><div><span>総支給額</span><strong id="periodTotal">—</strong></div></div>
+  <p id="periodCount" class="summaryCaption"></p>
+</section>
+<section class="panel" aria-labelledby="monthlyTitle"><h3 id="monthlyTitle">月別集計</h3><p class="summaryCaption">選択年・勤務先の12か月。月を押すと実績を表示します。</p><div id="monthlySummary" class="summaryTable"></div></section>
+<section class="panel" aria-labelledby="placeTitle"><h3 id="placeTitle">勤務先別集計</h3><p class="summaryCaption">選択期間の全勤務先。勤務先を押すと実績を絞り込みます。</p><div id="placeSummary" class="summaryTable"></div></section>
+<h2>勤務記録一覧</h2><p id="message" role="status">読み込み中…</p><div id="records"></div>
+</div><footer>v1.1.0／個人用。バックアップ推奨</footer></main><script src="database/storage.js?v=1101"></script><script src="database/migrations.js?v=1101"></script><script src="database/database.js?v=1101"></script><script src="records.js?v=1201"></script><script src="startup.js?v=1101"></script></body></html>

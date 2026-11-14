@@ -1,0 +1,60 @@
+/* Release announcement — does not change existing typography. */
+.releaseTicker {
+    position: relative;
+    overflow: hidden;
+    max-width: 100%;
+    padding: 7px 0;
+    border-radius: 6px;
+    background: var(--color-primary);
+    color: #F6F2E8;
+    font-size: .86rem;
+    font-weight: 700;
+    line-height: 1.5;
+    white-space: nowrap;
+}
+.releaseTickerText {
+    display: inline-block;
+    padding-left: 100%;
+    animation: releaseTickerScroll 12s linear infinite;
+}
+@keyframes releaseTickerScroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-100%); }
+}
+@media (prefers-reduced-motion: reduce) {
+    .releaseTicker { white-space: normal; text-align: center; }
+    .releaseTickerText { padding-left: 0; animation: none; }
+}
+/* Narrow screens only: keep the original single-row navigation. */
+@media (max-width: 480px) {
+    nav.item {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        padding: 5px 3px;
+        gap: 1px;
+        justify-content: space-between;
+        overflow-x: auto;
+    }
+    nav.item a, nav.item .navDisabled {
+        flex: 0 0 auto;
+        width: auto;
+        min-width: 0;
+        padding: 6px 3px;
+        font-size: clamp(10px, 2.9vw, 13px);
+    }
+    #workForm, #workForm label { min-width: 0; }
+    #workForm input[type="date"] {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+        -webkit-appearance: none;
+        appearance: none;
+        text-align: left;
+    }
+    #workForm input[type="date"]::-webkit-date-and-time-value {
+        text-align: left;
+    }
+}

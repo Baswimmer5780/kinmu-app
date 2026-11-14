@@ -1,0 +1,36 @@
+/* Shared home shell; only subpage content is styled here. */
+.subpage nav #home { background: transparent; color: var(--color-primary); }
+.subpage nav a[aria-current="page"] { background: var(--color-primary); color: white; border-radius: 10px; }
+.pageContent { color: var(--color-text); }
+.pageContent h2 { color: var(--color-primary); margin: 20px 0 12px; }
+.pageContent h3 { color: var(--color-primary); margin: 0 0 12px; }
+.pageContent label { display: block; margin: 10px 0; }
+.pageContent input { display: block; width: 100%; max-width: 100%; font: inherit; padding: 10px; border: 1px solid var(--color-border); border-radius: 8px; background: white; }
+.pageContent button { font: inherit; padding: 10px 14px; border: 0; border-radius: 8px; background: var(--color-primary); color: white; cursor: pointer; }
+.pageContent button:disabled { opacity: .5; cursor: not-allowed; }
+.pageContent article { background: white; border: 1px solid var(--color-border); border-radius: 15px; padding: 20px; margin: 12px 0; }
+.pageContent article p { margin: 8px 0; overflow-wrap: anywhere; }
+.pageContent .actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+.pageContent #message { background: var(--color-pale-green); padding: 12px 15px; border-radius: 10px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.pageContent #file { margin-bottom: 12px; }
+
+/* Records dashboard — scoped to this page. */
+.recordsPage .filterGrid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.recordsPage select { display:block; width:100%; min-width:0; margin-top:6px; padding:10px; font:inherit; color:var(--color-text); background:white; border:1px solid var(--color-border); border-radius:8px; }
+.recordsPage .summaryCaption { color:var(--color-text-muted); font-size:.82rem; line-height:1.6; margin:8px 0; }
+.recordsPage .annualPanel { background:var(--color-primary); color:white; }
+.recordsPage .annualPanel h3,.recordsPage .annualPanel .summaryCaption { color:#DCE8D9; }
+.recordsPage .annualTotal { display:block; font-size:clamp(1.8rem,7vw,2.5rem); margin:10px 0; font-variant-numeric:tabular-nums; overflow-wrap:anywhere; }
+.recordsPage .summaryBreakdown { display:flex; flex-wrap:wrap; gap:8px 18px; font-size:.85rem; }
+.recordsPage .periodGrid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
+.recordsPage .periodGrid>div { background:var(--color-pale-green); padding:10px 8px; border-radius:9px; }
+.recordsPage .periodGrid span { display:block; font-size:.75rem; color:var(--color-text-muted); }
+.recordsPage .periodGrid strong { display:block; font-size:1rem; color:var(--color-primary); overflow-wrap:anywhere; }
+.recordsPage .summaryRow { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 0; border-bottom:1px solid var(--color-border); }
+.recordsPage .summaryRow:last-child { border-bottom:0; }
+.recordsPage .summaryLink { text-align:left; background:var(--color-pale-green); color:var(--color-primary); max-width:45%; overflow-wrap:anywhere; }
+.recordsPage .summaryLink[aria-pressed="true"] { background:var(--color-primary); color:white; }
+.recordsPage .summaryAmount { text-align:right; min-width:0; overflow-wrap:anywhere; }
+.recordsPage .summaryAmount strong { display:block; color:var(--color-primary); }
+.recordsPage .summaryAmount small { display:block; color:var(--color-text-muted); font-size:.72rem; }
+@media(max-width:380px) { .recordsPage .periodGrid { grid-template-columns:1fr; } }

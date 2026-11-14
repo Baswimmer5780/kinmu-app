@@ -5,9 +5,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
     <meta name="theme-color" content="#173b66">
-    <link rel="stylesheet" href="home.css">
+    <link rel="stylesheet" href="home.css?v=1101">
+    <link rel="manifest" href="manifest.webmanifest">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <title>勤怠・給与メモ</title>
+<link rel="stylesheet" href="release-touch.css?v=final1">
 </head>
 
 <body>
@@ -15,38 +17,38 @@
         <header>
             <h1 id="mainTitle">WORK LOG</h1>
             <p id="subTitle">勤怠・給与管理アプリ</p>
-            <p>自分用・SQLで記録する試作版</p>
+            <p class="releaseTicker"><span class="releaseTickerText">祝！勤怠管理アプリ公開！</span></p>
         </header>
         <nav class="item">
-            <a href="index.html" id="home">ホーム</a>
+            <a href="index.html" id="home" aria-current="page">ホーム</a>
             <span class="navDisabled" id="work-schedule" aria-disabled="true">勤務予定</span>
-            <span class="navDisabled" id="work-records" aria-disabled="true">勤務実績</span>
+            <a href="work-records.html" id="work-records">勤務実績</a>
             <span class="navDisabled" id="earnings" aria-disabled="true">給与</span>
             <a href="#recordsPanel" id="log">記録</a>
-            <span class="navDisabled" id="backup" aria-disabled="true">バックアップ</span>
+            <a href="backup.html" id="backup">バックアップ</a>
         </nav>
 
         <section class="notice">
             <i class="fa-solid fa-database"></i>
-            <span id="status">SQLite保存は未実装です</span>
+            <span id="status" role="status" aria-live="polite">SQLiteを準備中…</span>
         </section>
         <section class="panel">
-            <button id="openText" type="button" aria-expanded="false">
+            <button id="openRegistration" type="button" aria-expanded="false" aria-controls="inputArea">
 
-                <div class="register-icon">
+                <span class="register-icon">
                     <i class="fa-solid fa-calendar-plus"></i>
-                </div>
+                </span>
 
-                <div class="register-title">
-                    <h2>勤務登録</h2>
-                    <p>今日の勤務を記録する</p>
-                </div>
+                <span class="register-title">
+                    <span class="panelTitle">勤務登録</span>
+                    <span class="panelSubtitle">今日の勤務を記録する</span>
+                </span>
 
-                <i id="arrow" class="fa-solid fa-chevron-down"></i>
+                <i id="registrationArrow" class="fa-solid fa-chevron-down"></i>
 
             </button>
-            <div id="inputArea" class="item">
-                <form id="form1">
+            <div id="inputArea" class="item" inert>
+                <form id="workForm">
                     <label>日付
                         <input type="date" id="date" required>
                     </label>
@@ -55,6 +57,7 @@
                             <option value="">ー ー ー</option>
                             <option>守口スイミング</option>
                             <option>ロボ団</option>
+                            <option>東進・採点</option>
                             <option>東進・品質管理</option>
                             <option>Cinet</option>
                             <option>想彩</option>
@@ -133,11 +136,21 @@
                         <label>時給（円）
                             <input type="number" id="rate" min="0" step="1" placeholder="時給を入力">
                         </label>
+                        <button type="button" id="rateLock" class="rateLock" hidden>今回だけ変更</button><p class="hint" id="rateHint"></p>
                         <div class="calculationBox">
                             <div class="resultRow"><span>合計勤務時間</span><strong id="hourlyWorkTime">—</strong></div>
                             <div class="resultRow"><span>給与予定額</span><strong id="hourlySalary">—</strong></div>
                         </div>
                         <p class="hint">※休憩・深夜割増・税金はまだ未対応。終了時刻は開始時刻より後にしてね。</p>
+                    </div>
+                    <div id="grading" hidden>
+                        <div class="payMode">出来高制・採点業務</div>
+                        <label>採点者単価（円）<input type="number" id="gradingRate" min="0" step="1" value="2000" readonly></label>
+                        <button type="button" id="gradingLock" class="rateLock">今回だけ変更</button>
+                        <label>科目<select id="gradingSubject"><option value="">科目を選択</option><option>数学</option><option>英語</option><option>国語</option><option>物理</option><option>化学</option><option>生物</option><option>地学</option><option>地理</option><option>日本史</option><option>世界史</option><option>情報</option><option>複数科目・その他</option></select></label>
+                        <label>合計工数（Slack通知の値）<input type="text" inputmode="decimal" id="gradingEffort" placeholder="例：1.425" maxlength="25"></label>
+                        <div class="calculationBox"><div class="resultRow"><span>計算結果（端数処理前）</span><strong id="gradingExact">—</strong></div><div class="resultRow"><span>給与予定額</span><strong id="gradingSalary">—</strong></div></div>
+                        <p class="hint">採点者単価 × 合計工数。給与予定額は記録ごとに1円単位で四捨五入（暫定）。</p>
                     </div>
                     <div id="flat" hidden>
                         <label>受取予定額（円）
@@ -152,27 +165,26 @@
                         <div class="grossAmount"><span id="grossSalary">—</span><span class="yenUnit">円</span></div>
                         <div class="grossDetail">基本給 <span id="baseSalary">—</span>円 ＋ 交通費 <span id="transportSalary">0</span>円</div>
                     </div>
-                    <button type="submit" id="save" disabled>勤務記録を登録する
-
-                    </button>
+                    <button type="submit" id="save" disabled>勤務記録を登録する</button>
+                    <p class="hint" id="saveHelp" aria-live="polite">SQLiteの準備中です。</p>
+                    <p class="hint" id="registrationMessage" role="status" aria-live="polite"></p>
                 </form>
 
             </div>
 
         </section>
 
-
         <section class="panel" id="recordsPanel">
             <button id="openRecords" type="button" aria-expanded="false" aria-controls="recordsArea">
 
-                <div class="register-icon">
+                <span class="register-icon">
                     <i class="fa-solid fa-clipboard-list"></i>
-                </div>
+                </span>
 
-                <div class="register-title">
-                    <h2>記録</h2>
-                    <p>勤務の記録を確認・編集する</p>
-                </div>
+                <span class="register-title">
+                    <span class="panelTitle">記録</span>
+                    <span class="panelSubtitle">勤務の記録を確認・編集する</span>
+                </span>
 
                 <i id="recordsArrow" class="fa-solid fa-chevron-down"></i>
 
@@ -186,10 +198,13 @@
             </div>
         </section>
 
-        <footer>試行版 v0.2.1／個人用。バックアップ推奨</footer>
+        <footer>公開版v1.0.0／個人用。バックアップ推奨</footer>
     </main>
-    <script src="https://cdn.jsdelivr.net/npm/sql.js@1.13.0/dist/sql-wasm.js"></script>
-    <script src="home.js"></script>
-</body>
+    
+    <script src="database/storage.js?v=1101"></script>
+    <script src="database/migrations.js?v=1101"></script>
+    <script src="database/database.js?v=1101"></script>
+    <script src="home.js?v=1101"></script>
+<script src="startup.js?v=1101"></script></body>
 
 </html>

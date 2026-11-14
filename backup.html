@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#174D3A"><link rel="stylesheet" href="home.css?v=1101"><link rel="stylesheet" href="pages.css?v=1101"><link rel="manifest" href="manifest.webmanifest"><title>WORK LOG | バックアップ</title><link rel="stylesheet" href="release-touch.css?v=final1">
+</head>
+<body class="subpage"><main><header>
+            <h1 id="mainTitle">WORK LOG</h1>
+            <p id="subTitle">勤怠・給与管理アプリ</p>
+            <p class="releaseTicker"><span class="releaseTickerText">祝！勤怠管理アプリ公開間近！</span></p>
+        </header>
+        <nav class="item">
+            <a href="index.html" id="home">ホーム</a>
+            <span class="navDisabled" id="work-schedule" aria-disabled="true">勤務予定</span>
+            <a href="work-records.html" id="work-records">勤務実績</a>
+            <span class="navDisabled" id="earnings" aria-disabled="true">給与</span>
+            <a href="index.html#recordsPanel" id="log">記録</a>
+            <a href="backup.html" id="backup" aria-current="page">バックアップ</a>
+        </nav><div class="pageContent"><h2>バックアップ</h2><section class="panel"><h3>SQLiteファイルを保存</h3><p>端末の外にもコピーを保管してください。</p><button id="export" disabled>バックアップを出力</button></section><section class="panel"><h3>復元</h3><p>現在のデータを置き換えます。復元前のデータはこの端末にも1世代保持します。先に外部バックアップを出力してください。</p><input id="file" type="file" accept=".sqlite,.db"><button id="restore" disabled>復元する</button></section><section class="panel"><h3>復元前のデータ</h3><p>直近の復元で置き換える前のSQLiteファイルを出力できます。</p><button id="previous" disabled>復元前のバックアップを出力</button></section><section class="panel"><h3>DB更新前のデータ</h3><p>スキーマv2へ移行する前のSQLiteファイルを出力できます。</p><button id="migrationBackup" disabled>更新前のバックアップを出力</button></section><p id="message" role="status">読み込み中…</p></div><footer>v1.1.0／個人用。バックアップ推奨</footer></main><script src="database/storage.js?v=1101"></script><script src="database/migrations.js?v=1101"></script><script src="database/database.js?v=1101"></script><script src="backup.js?v=1101"></script><script src="startup.js?v=1101"></script></body></html>
